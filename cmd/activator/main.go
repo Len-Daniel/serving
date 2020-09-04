@@ -58,6 +58,7 @@ import (
 	"knative.dev/pkg/websocket"
 	activatorconfig "knative.dev/serving/pkg/activator/config"
 	activatorhandler "knative.dev/serving/pkg/activator/handler"
+	"knative.dev/serving/pkg/activator/udphandler"
 	activatornet "knative.dev/serving/pkg/activator/net"
 	asmetrics "knative.dev/serving/pkg/autoscaler/metrics"
 	pkghttp "knative.dev/serving/pkg/http"
@@ -199,18 +200,18 @@ func main() {
 	// Note: innermost handlers are specified first, ie. the last handler in the chain will be executed first
 	var ah http.Handler = activatorhandler.New(ctx, throttler)
 	ah = concurrencyReporter.Handler(ah)
-	ah = tracing.HTTPSpanMiddleware(ah)
+	//ah = tracing.HTTPSpanMiddleware(ah)
 	ah = configStore.HTTPMiddleware(ah)
 	reqLogHandler, err := pkghttp.NewRequestLogHandler(ah, logging.NewSyncFileWriter(os.Stdout), "",
 		requestLogTemplateInputGetter(revisioninformer.Get(ctx).Lister()), false /*enableProbeRequestLog*/)
 	if err != nil {
 		logger.Fatalw("Unable to create request log handler", zap.Error(err))
 	}
-	ah = reqLogHandler
+	//ah = reqLogHandler
 
 	// NOTE: MetricHandler is being used as the outermost handler of the meaty bits. We're not interested in measuring
 	// the healthchecks or probes.
-	ah = activatorhandler.NewMetricHandler(env.PodName, ah)
+	//ah = activatorhandler.NewMetricHandler(env.PodName, ah)
 	ah = activatorhandler.NewContextHandler(ctx, ah)
 
 	// Network probe handlers.
@@ -219,6 +220,7 @@ func main() {
 
 	// Set up our health check based on the health of stat sink and environmental factors.
 	sigCtx, sigCancel := context.WithCancel(context.Background())
+	//newHealthCheck(sigCtx, logger, statSink)
 	hc := newHealthCheck(sigCtx, logger, statSink)
 	ah = &activatorhandler.HealthHandler{HealthCheck: hc, NextHandler: ah, Logger: logger}
 
@@ -252,6 +254,11 @@ func main() {
 		}(name, server)
 	}
 
+	forwarder, err := forward.Forward("0.0.0.0:8014", "10.99.58.60:90", throttler, ctx, forward.DefaultTimeout)
+	if err != nil {
+		errCh <- err
+	}
+
 	sigCh := signals.SetupSignalHandler()
 
 	// Wait for the signal to drain.
@@ -274,6 +281,7 @@ func main() {
 	for _, server := range servers {
 		server.Shutdown(context.Background())
 	}
+	forwarder.Close()
 	logger.Info("Servers shutdown.")
 }
 
