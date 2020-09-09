@@ -20,6 +20,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"log"
 
 	"go.uber.org/zap"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
@@ -36,6 +37,7 @@ import (
 // NewContextHandler creates a handler that extracts the necessary context from the request
 // and makes it available on the request's context.
 func NewContextHandler(ctx context.Context, next http.Handler) http.Handler {
+	log.Printf("ContextHandler: NewContextHandler")
 	return &contextHandler{
 		nextHandler:    next,
 		revisionLister: revisioninformer.Get(ctx).Lister(),
@@ -51,6 +53,7 @@ type contextHandler struct {
 }
 
 func (h *contextHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	log.Printf("ContextHandler: ServeHTTP")
 	namespace := r.Header.Get(activator.RevisionHeaderNamespace)
 	name := r.Header.Get(activator.RevisionHeaderName)
 	revID := types.NamespacedName{Namespace: namespace, Name: name}
@@ -72,6 +75,7 @@ func (h *contextHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func sendError(err error, w http.ResponseWriter) {
+	log.Printf("ContextHandler: sendError")
 	msg := fmt.Sprint("Error getting active endpoint: ", err)
 	if k8serrors.IsNotFound(err) {
 		http.Error(w, msg, http.StatusNotFound)

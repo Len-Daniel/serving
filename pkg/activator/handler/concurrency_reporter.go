@@ -22,6 +22,7 @@ import (
 	"net/http"
 	"sync"
 	"time"
+	"log"
 
 	"go.uber.org/zap"
 
@@ -66,6 +67,8 @@ type ConcurrencyReporter struct {
 // NewConcurrencyReporter creates a ConcurrencyReporter which listens to incoming
 // ReqEvents on reqCh and ticks on reportCh and reports stats on statCh.
 func NewConcurrencyReporter(ctx context.Context, podName string, statCh chan []asmetrics.StatMessage) *ConcurrencyReporter {
+	log.Printf("ConcurrencyReporter: NewConcurrencyReporter")
+	
 	return &ConcurrencyReporter{
 		logger:  logging.FromContext(ctx),
 		podName: podName,
@@ -79,6 +82,8 @@ func NewConcurrencyReporter(ctx context.Context, podName string, statCh chan []a
 
 // handleEvent handles request events (in, out) and updates the respective stats.
 func (cr *ConcurrencyReporter) handleEvent(event network.ReqEvent) {
+	log.Printf("ConcurrencyReporter: handleEvent")
+
 	stats, msg := cr.getOrCreateStat(event)
 	if msg != nil {
 		cr.statCh <- []asmetrics.StatMessage{*msg}
@@ -90,6 +95,8 @@ func (cr *ConcurrencyReporter) handleEvent(event network.ReqEvent) {
 // If absent it creates a new one and returns it, potentially returning a StatMessage too
 // to trigger an immediate scale-from-0.
 func (cr *ConcurrencyReporter) getOrCreateStat(event network.ReqEvent) (*network.RequestStats, *asmetrics.StatMessage) {
+	log.Printf("ConcurrencyReporter: getOrCreateStat")
+
 	stat := func() *network.RequestStats {
 		cr.mux.RLock()
 		defer cr.mux.RUnlock()
@@ -129,6 +136,7 @@ func (cr *ConcurrencyReporter) getOrCreateStat(event network.ReqEvent) (*network
 // report cuts a report from all collected statistics and sends the respective messages
 // via the statsCh and reports the concurrency metrics to prometheus.
 func (cr *ConcurrencyReporter) report(now time.Time) []asmetrics.StatMessage {
+	log.Printf("ConcurrencyReporter: report")
 	cr.mux.Lock()
 	defer cr.mux.Unlock()
 
@@ -170,6 +178,7 @@ func (cr *ConcurrencyReporter) report(now time.Time) []asmetrics.StatMessage {
 }
 
 func (cr *ConcurrencyReporter) reportToMetricsBackend(key types.NamespacedName, concurrency float64) {
+	log.Printf("ConcurrencyReporter: reportToMetricsBackend")
 	ns := key.Namespace
 	revName := key.Name
 	revision, err := cr.rl.Revisions(ns).Get(revName)
@@ -186,12 +195,14 @@ func (cr *ConcurrencyReporter) reportToMetricsBackend(key types.NamespacedName, 
 
 // Run runs until stopCh is closed and processes events on all incoming channels.
 func (cr *ConcurrencyReporter) Run(stopCh <-chan struct{}) {
+	log.Printf("ConcurrencyReporter: Run")
 	ticker := time.NewTicker(reportInterval)
 	defer ticker.Stop()
 	cr.run(stopCh, ticker.C)
 }
 
 func (cr *ConcurrencyReporter) run(stopCh <-chan struct{}, reportCh <-chan time.Time) {
+	log.Printf("ConcurrencyReporter: Run")
 	for {
 		select {
 		case now := <-reportCh:

@@ -21,6 +21,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"log"
 
 	"go.opencensus.io/plugin/ochttp"
 	"go.opencensus.io/trace"
@@ -56,6 +57,7 @@ func New(ctx context.Context, t Throttler) http.Handler {
 	// TODO: run loadtests to determine the optimal values here.
 	defaultTransport := pkgnet.NewAutoTransport(1000, /*maxidleconnes*/
 		100 /*maxidleperhos*/)
+	log.Printf("New http.Handler created")
 	return &activationHandler{
 		transport: defaultTransport,
 		tracingTransport: &ochttp.Transport{
@@ -70,7 +72,7 @@ func New(ctx context.Context, t Throttler) http.Handler {
 func (a *activationHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logger := logging.FromContext(r.Context())
 	tracingEnabled := activatorconfig.FromContext(r.Context()).Tracing.Backend != tracingconfig.None
-
+	log.Printf("ServeHTTP log:", w, r)
 	tryContext, trySpan := r.Context(), (*trace.Span)(nil)
 	if tracingEnabled {
 		tryContext, trySpan = trace.StartSpan(r.Context(), "throttler_try")
@@ -109,7 +111,12 @@ func (a *activationHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (a *activationHandler) proxyRequest(logger *zap.SugaredLogger, w http.ResponseWriter, r *http.Request, target *url.URL, tracingEnabled bool) {
 	network.RewriteHostIn(r)
 	r.Header.Set(network.ProxyHeaderName, activator.Name)
-
+	log.Printf("proxyRequest log: ", w, r, target)
+	//newTarget := "http:/" + "/" + target.Hostname() + ":8080"
+	//log.Printf("newTarget: ", newTarget)
+	//newURL, err := url.Parse(newTarget)
+        //target = newURL
+	//log.Printf("target modified: ", target, err)
 	// Setup the reverse proxy.
 	proxy := httputil.NewSingleHostReverseProxy(target)
 	proxy.BufferPool = a.bufferPool

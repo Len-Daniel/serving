@@ -19,6 +19,7 @@ package config
 import (
 	"context"
 	"net/http"
+	"log"
 
 	"knative.dev/pkg/configmap"
 	tracingconfig "knative.dev/pkg/tracing/config"
@@ -33,10 +34,12 @@ type Config struct {
 
 // FromContext obtains a Config injected into the passed context
 func FromContext(ctx context.Context) *Config {
+	log.Printf("configStore: FromContext")
 	return ctx.Value(cfgKey{}).(*Config)
 }
 
 func toContext(ctx context.Context, c *Config) context.Context {
+	log.Printf("configStore: toContext")
 	return context.WithValue(ctx, cfgKey{}, c)
 }
 
@@ -48,6 +51,7 @@ type Store struct {
 
 // NewStore creates a configuration Store
 func NewStore(logger configmap.Logger, onAfterStore ...func(name string, value interface{})) *Store {
+	log.Printf("configStore: NewStore")
 	return &Store{
 		UntypedStore: configmap.NewUntypedStore(
 			"activator",
@@ -62,11 +66,13 @@ func NewStore(logger configmap.Logger, onAfterStore ...func(name string, value i
 
 // ToContext stores the configuration Store in the passed context
 func (s *Store) ToContext(ctx context.Context) context.Context {
+	log.Printf("configStore: ToContext")
 	return toContext(ctx, s.Load())
 }
 
 // Load creates a Config for this store
 func (s *Store) Load() *Config {
+	log.Printf("configStore: Load")
 	return &Config{
 		Tracing: s.UntypedLoad(tracingconfig.ConfigName).(*tracingconfig.Config).DeepCopy(),
 	}
@@ -79,6 +85,7 @@ type storeMiddleware struct {
 
 // ServeHTTP injects Config in to the context of the http request r
 func (mw *storeMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	log.Printf("configStore: ServeHTTP")
 	ctx := mw.store.ToContext(r.Context())
 	mw.next.ServeHTTP(w, r.WithContext(ctx))
 }
