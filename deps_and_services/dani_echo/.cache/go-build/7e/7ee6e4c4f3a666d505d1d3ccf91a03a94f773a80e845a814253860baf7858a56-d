@@ -1,0 +1,10 @@
+./doc.go
+./example.go
+./filter.go
+./informed_watcher.go
+./load.go
+./manual_watcher.go
+./parse.go
+./static_watcher.go
+./store.go
+./watcher.go

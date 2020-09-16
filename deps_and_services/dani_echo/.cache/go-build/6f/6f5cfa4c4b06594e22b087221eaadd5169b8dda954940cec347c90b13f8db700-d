@@ -1,0 +1,7 @@
+./configuration.go
+./doc.go
+./generated_expansion.go
+./revision.go
+./route.go
+./service.go
+./serving_client.go

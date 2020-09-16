@@ -1,0 +1,4 @@
+./defaults.go
+./doc.go
+./store.go
+./zz_generated.deepcopy.go

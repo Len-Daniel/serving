@@ -1,0 +1,5 @@
+./factory.go
+./factorycrd.go
+./fieldspec.go
+./namebackreferences.go
+./transformerconfig.go

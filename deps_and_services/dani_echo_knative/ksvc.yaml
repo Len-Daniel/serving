@@ -1,0 +1,17 @@
+apiVersion: serving.knative.dev/v1 # Current version of Knative
+kind: Service
+metadata:
+  name: danitag-echo # The name of the app
+  namespace: default # The namespace the app will use
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "2"
+      labels:
+        app: "udp-echo"
+    spec:
+      containers:
+        - image: docker.io/daniellen/danitag:v0
+          ports:
+            - containerPort: 3333

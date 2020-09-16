@@ -1,0 +1,6 @@
+./configmaperror.go
+./kustomizationerror.go
+./patcherror.go
+./resourceerror.go
+./secreterror.go
+./yamlformaterror.go

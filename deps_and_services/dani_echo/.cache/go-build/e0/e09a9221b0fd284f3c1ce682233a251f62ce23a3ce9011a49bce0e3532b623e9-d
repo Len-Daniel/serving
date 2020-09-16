@@ -1,0 +1,12 @@
+./doc.go
+./metric_defaults.go
+./metric_lifecycle.go
+./metric_types.go
+./metric_validation.go
+./pa_defaults.go
+./pa_lifecycle.go
+./pa_types.go
+./pa_validation.go
+./podscalable_types.go
+./register.go
+./zz_generated.deepcopy.go

@@ -1,0 +1,7 @@
+./commonannotations.go
+./commonlabels.go
+./defaultconfig.go
+./nameprefix.go
+./namereference.go
+./namespace.go
+./varreference.go

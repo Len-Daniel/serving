@@ -1,0 +1,4 @@
+./genargs.go
+./generationbehavior.go
+./kustomization.go
+./var.go

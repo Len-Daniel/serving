@@ -1,0 +1,6 @@
+./doc.go
+./fake_configuration.go
+./fake_revision.go
+./fake_route.go
+./fake_service.go
+./fake_serving_client.go

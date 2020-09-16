@@ -1,0 +1,5 @@
+./delete.go
+./describe.go
+./human_readable_flags.go
+./list.go
+./revision.go

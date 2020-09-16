@@ -1,0 +1,8 @@
+./create.go
+./delete.go
+./describe.go
+./list.go
+./list_flags.go
+./trigger.go
+./update.go
+./update_flags.go

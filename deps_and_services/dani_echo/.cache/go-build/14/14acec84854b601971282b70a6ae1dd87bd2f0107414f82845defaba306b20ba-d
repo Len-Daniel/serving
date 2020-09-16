@@ -1,0 +1,5 @@
+./defaults.go
+./doc.go
+./features.go
+./store.go
+./zz_generated.deepcopy.go

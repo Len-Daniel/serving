@@ -1,0 +1,12 @@
+./builder.go
+./client.go
+./doc.go
+./fake.go
+./helper.go
+./interfaces.go
+./mapper.go
+./metadata_decoder.go
+./result.go
+./scheme.go
+./selector.go
+./visitor.go

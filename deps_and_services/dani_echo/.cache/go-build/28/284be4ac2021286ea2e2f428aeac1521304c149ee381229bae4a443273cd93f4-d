@@ -1,0 +1,6 @@
+./compare.go
+./logging_http_transport.go
+./orderedmap.go
+./parsing_helper.go
+./schema_handling.go
+./unstructured.go

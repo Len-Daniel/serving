@@ -1,0 +1,10 @@
+./image.go
+./labelsandannotations.go
+./multitransformer.go
+./mutatefield.go
+./namereference.go
+./namespace.go
+./nooptransformer.go
+./prefixsuffixname.go
+./refvars.go
+./transformer.go

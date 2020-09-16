@@ -1,0 +1,5 @@
+./interface.go
+./prefixwriter.go
+./tablegenerator.go
+./tableprinter.go
+./tabwriter.go

@@ -1,0 +1,13 @@
+./condition_set.go
+./condition_types.go
+./contexts.go
+./convert.go
+./deprecated.go
+./doc.go
+./field_error.go
+./interfaces.go
+./kind2resource.go
+./metadata_validation.go
+./url.go
+./volatile_time.go
+./zz_generated.deepcopy.go
