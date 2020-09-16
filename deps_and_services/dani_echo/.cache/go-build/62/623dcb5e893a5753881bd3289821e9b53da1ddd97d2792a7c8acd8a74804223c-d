@@ -1,7 +1,0 @@
-./apiserversource.go
-./containersource.go
-./doc.go
-./generated_expansion.go
-./pingsource.go
-./sinkbinding.go
-./sources_client.go

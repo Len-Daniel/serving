@@ -1,6 +1,0 @@
-./doc.go
-./fake_apiserversource.go
-./fake_containersource.go
-./fake_pingsource.go
-./fake_sinkbinding.go
-./fake_sources_client.go

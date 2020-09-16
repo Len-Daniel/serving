@@ -1,7 +1,0 @@
-./addressable_types.go
-./binding_types.go
-./doc.go
-./legacy_targetable_types.go
-./register.go
-./retired_targetable_types.go
-./zz_generated.deepcopy.go

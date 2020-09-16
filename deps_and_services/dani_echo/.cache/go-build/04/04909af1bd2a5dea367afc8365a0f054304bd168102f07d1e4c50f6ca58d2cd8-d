@@ -1,4 +1,0 @@
-./doc.go
-./export_types.go
-./register.go
-./zz_generated.deepcopy.go

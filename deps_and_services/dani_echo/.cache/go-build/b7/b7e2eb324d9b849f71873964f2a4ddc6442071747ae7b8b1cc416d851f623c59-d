@@ -1,7 +1,0 @@
-./confirmeddir.go
-./fakefile.go
-./fakefileinfo.go
-./fakefs.go
-./fs.go
-./realfile.go
-./realfs.go

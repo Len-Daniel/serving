@@ -1,7 +1,0 @@
-./addressable_types.go
-./destination.go
-./doc.go
-./register.go
-./source_types.go
-./status_types.go
-./zz_generated.deepcopy.go

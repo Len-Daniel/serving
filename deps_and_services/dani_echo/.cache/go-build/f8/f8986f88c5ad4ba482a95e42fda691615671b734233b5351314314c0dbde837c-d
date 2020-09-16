@@ -1,6 +1,0 @@
-./csinode.go
-./doc.go
-./generated_expansion.go
-./storage_client.go
-./storageclass.go
-./volumeattachment.go

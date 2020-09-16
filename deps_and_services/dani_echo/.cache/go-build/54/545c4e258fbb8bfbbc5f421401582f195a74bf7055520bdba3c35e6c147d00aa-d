@@ -1,7 +1,0 @@
-./create.go
-./delete.go
-./describe.go
-./flags.go
-./list.go
-./ping.go
-./update.go

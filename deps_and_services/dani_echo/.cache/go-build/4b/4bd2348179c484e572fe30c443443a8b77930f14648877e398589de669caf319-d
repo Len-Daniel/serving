@@ -1,9 +1,0 @@
-./configuration_edit_flags.go
-./create.go
-./delete.go
-./describe.go
-./export.go
-./human_readable_flags.go
-./list.go
-./service.go
-./update.go

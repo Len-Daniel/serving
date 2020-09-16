@@ -1,5 +1,0 @@
-./channel_defaults.go
-./channel_template_types.go
-./doc.go
-./store.go
-./zz_generated.deepcopy.go

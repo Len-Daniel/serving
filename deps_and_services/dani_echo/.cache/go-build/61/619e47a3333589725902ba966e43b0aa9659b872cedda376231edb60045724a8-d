@@ -1,5 +1,0 @@
-./fieldmask.go
-./k8s_lifecycle.go
-./k8s_validation.go
-./metadata_validation.go
-./register.go

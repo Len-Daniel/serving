@@ -1,7 +1,0 @@
-./apiserver_client.go
-./apiserver_client_mock.go
-./binding_client.go
-./binding_client_mock.go
-./client.go
-./ping_client.go
-./ping_client_mock.go
