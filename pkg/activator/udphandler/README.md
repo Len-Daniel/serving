@@ -2,6 +2,8 @@
 
 A dead simple Go (golang) package to forward UDP packets like a reverse NAT (i.e. it supports multiple users).
 
+Original: https://github.com/1lann/udp-forward
+
 ## Usage
 
 ```go
